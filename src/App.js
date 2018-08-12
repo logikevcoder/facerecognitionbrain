@@ -47,15 +47,14 @@ class App extends Component {
   }
 
   onButtonSubmit = () => {
-    console.log("click");
-    // this.setState({imageUrl: this.state.input});
+    this.setState({imageUrl: this.state.input}); // setting the button click to use the target value for the image
     app.models
     .predict(
-      Clarifai.COLOR_MODEL, 
-      this.state.input)
+      Clarifai.FACE_DETECT_MODEL, 
+      this.state.input) // takes whatever is in input (image src) and displaying it
     .then(
       function (response) {
-        console.log(response);
+        console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
       },
       function (err) {
         console.log("Something went wrong")
