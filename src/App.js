@@ -3,6 +3,7 @@ import Navigation from './components/Navigation/Navigation';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import Signin from './components/Signin/Signin';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 
@@ -39,8 +40,13 @@ class App extends Component {
     this.state = {
       input: '',
       imageUrl: '',
-      box: {}
+      box: {},
+      route: 'signin'
     }
+  }
+
+  onRouteChange = (route) => {
+    this.setState({route: route});
   }
 
   calculateFaceLocation = (data) => {
@@ -82,14 +88,19 @@ class App extends Component {
         params={particlesOptions}
       />
 
-        <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm 
-          onInputChange={this.onInputChange} 
-          onButtonSubmit={this.onButtonSubmit}
-        />
-        <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
+        <Navigation onRouteChange={this.onRouteChange} />
+        { this.state.route === 'signin' 
+          ? <Signin onRouteChange={this.onRouteChange} />
+          : <div>
+              <Logo />
+              <Rank />
+              <ImageLinkForm 
+                onInputChange={this.onInputChange} 
+                onButtonSubmit={this.onButtonSubmit}
+              />
+              <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
+            </div>
+        }
       </div>
     );
   }
